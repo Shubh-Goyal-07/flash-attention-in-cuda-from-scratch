@@ -33,8 +33,25 @@ __global__ void elementwise_exp(float* a, int n) {
         a[i] = expf(a[i]);
 }
 
-# Step 4 - row_max (not yet solved)
-# TODO: implement
+# Step 4 - row_max
+#include <cmath>
+
+__global__ void row_max(const float* matrix, float* out, int rows, int cols) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    int stride = blockDim.x * gridDim.x;
+
+    for (int i = idx; i < rows; i += stride){
+        float max_val = -INFINITY;
+        int st_idx = i * cols;
+
+        for (int j = 0; j < cols; j++) {
+            if (matrix[st_idx + j] > max_val)
+                max_val = matrix[st_idx + j];
+        }
+
+        out[i] = max_val;
+    }
+}
 
 # Step 5 - row_sum (not yet solved)
 # TODO: implement
