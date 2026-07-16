@@ -84,8 +84,18 @@ __device__ float dot_product(const float* a, const float* b, int n) {
 # Step 7 - matmul (not yet solved)
 # TODO: implement
 
-# Step 8 - transpose (not yet solved)
-# TODO: implement
+# Step 8 - transpose
+__global__ void transpose(const float* in, float* out, int rows, int cols) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    int stride = blockDim.x * gridDim.x;
+
+    for (int i = idx; i < rows * cols; i += stride) {
+        int row = i / cols;
+        int col = i % cols;
+
+        out[col * rows + row] = in[i];
+    }
+}
 
 # Step 9 - qk_scores (not yet solved)
 # TODO: implement
