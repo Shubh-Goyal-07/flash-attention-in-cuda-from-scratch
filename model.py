@@ -53,8 +53,22 @@ __global__ void row_max(const float* matrix, float* out, int rows, int cols) {
     }
 }
 
-# Step 5 - row_sum (not yet solved)
-# TODO: implement
+# Step 5 - row_sum
+__global__ void row_sum(const float* matrix, float* out, int rows, int cols) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    int stride = blockDim.x * gridDim.x;
+
+    for (int i = idx; i < rows; i += stride){
+        float sum = 0;
+        int st_idx = i * cols;
+
+        for (int j = 0; j < cols; j++) {
+            sum = sum + matrix[st_idx + j];
+        }
+
+        out[i] = sum;
+    }
+}
 
 # Step 6 - dot_product (not yet solved)
 # TODO: implement
