@@ -8,9 +8,10 @@ import numpy as np
 
 # Step 1 - vector_add
 __global__ void vector_add(const float* a, const float* b, float* c, int n) {
-    int index = threadIdx.x;
-    int stride = blockDim.x;
-    for (int i = index; i < n; i += stride)
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    int stride = blockDim.x * gridDim.x;
+
+    for (int i = idx; i < n; i += stride)
         c[i] = a[i] + b[i];
 }
 
